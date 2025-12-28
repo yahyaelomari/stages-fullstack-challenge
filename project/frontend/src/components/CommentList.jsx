@@ -23,7 +23,7 @@ function CommentList({ articleId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!newComment.trim()) {
       return;
     }
@@ -34,7 +34,7 @@ function CommentList({ articleId }) {
         user_id: 1, // Mock user ID
         content: newComment,
       });
-      
+
       setNewComment('');
       fetchComments(); // Refresh comments
     } catch (error) {
@@ -60,15 +60,15 @@ function CommentList({ articleId }) {
   return (
     <div>
       <h4 style={{ marginBottom: '1rem' }}>Commentaires</h4>
-      
+
       <div style={{ marginBottom: '1rem' }}>
         {comments.length === 0 ? (
           <p style={{ color: '#7f8c8d', fontStyle: 'italic' }}>Aucun commentaire pour le moment</p>
         ) : (
           comments.map(comment => (
-            <div 
-              key={comment.id} 
-              style={{ 
+            <div
+              key={comment.id}
+              style={{
                 padding: '0.8rem',
                 marginBottom: '0.5rem',
                 backgroundColor: '#f8f9fa',
@@ -76,11 +76,10 @@ function CommentList({ articleId }) {
                 position: 'relative'
               }}
             >
-              <div 
-                dangerouslySetInnerHTML={{ __html: comment.content }}
-                style={{ marginBottom: '0.5rem' }}
-              />
-              
+              <div style={{ marginBottom: '0.5rem' }}>
+                {comment.content}
+              </div>
+
               <div style={{ fontSize: '0.85em', color: '#7f8c8d' }}>
                 — {comment.user?.name || 'Utilisateur'}
               </div>
