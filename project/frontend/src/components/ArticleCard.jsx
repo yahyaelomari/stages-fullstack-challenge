@@ -6,16 +6,16 @@ function ArticleCard({ article, onDelete }) {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    
+
     const date = new Date(dateString);
-    
-    return date.toLocaleDateString('en-US', {
+
+    return date.toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      timeZone: 'America/Los_Angeles'
+      timeZone: 'Europe/Paris'
     });
   };
 
@@ -26,19 +26,19 @@ function ArticleCard({ article, onDelete }) {
         Par {article.author} • {formatDate(article.created_at)}
       </div>
       <p style={{ marginBottom: '1rem' }}>{article.content}</p>
-      
+
       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <button 
+        <button
           onClick={() => setShowComments(!showComments)}
           style={{ fontSize: '0.9em' }}
         >
           {showComments ? 'Masquer' : 'Afficher'} commentaires ({article.comments_count || 0})
         </button>
-        
+
         {onDelete && (
-          <button 
+          <button
             onClick={() => onDelete(article.id)}
-            style={{ 
+            style={{
               backgroundColor: '#e74c3c',
               fontSize: '0.9em'
             }}
