@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
@@ -13,7 +14,9 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Article::with('author')->withCount('comments')->get();
+        $articles = Cache::remember('articles.index', 60, function () {
+            return Article::with('author')->withCount('comments')->get();
+        });
 
         $articles = $articles->map(function ($article) use ($request) {
             return [
@@ -105,6 +108,9 @@ class ArticleController extends Controller
             'published_at' => now(),
         ]);
 
+        Cache::forget('articles.index');
+        Cache::forget('stats');
+
         return response()->json($article, 201);
     }
 
@@ -122,6 +128,9 @@ class ArticleController extends Controller
 
         $article->update($validated);
 
+        Cache::forget('articles.index');
+        Cache::forget('stats');
+
         return response()->json($article);
     }
 
@@ -132,6 +141,9 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $article->delete();
+
+        Cache::forget('articles.index');
+        Cache::forget('stats');
 
         return response()->json(['message' => 'Article deleted successfully']);
     }
